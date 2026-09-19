@@ -296,6 +296,42 @@
       margin-top: 24px;
     }
 
+    /* ============== SOBRE EN LA ESQUINA ============== */
+    .sobre-esquina {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 88px;
+      height: 66px;
+      z-index: 50;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 14px rgba(58, 46, 31, 0.18));
+    }
+    .sobre-esquina svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+    .sobre-solapa {
+      transform-origin: 60px 6px; /* bisagra en el centro del borde superior */
+      transform-box: view-box;
+    }
+    .sobre-carta {
+      transform-origin: 60px 46px;
+      transform-box: view-box;
+      transform: translateY(28px);
+      opacity: 0;
+    }
+    @media (max-width: 540px) {
+      .sobre-esquina {
+        width: 60px;
+        height: 45px;
+        bottom: 16px;
+        right: 16px;
+      }
+    }
+
     /* ============== PIE DE PÁGINA ============== */
     .pie {
       text-align: center;
@@ -340,6 +376,30 @@
 </head>
 <body>
   <main class="contenedor">
+
+    <!-- Sobre en la esquina que se abre al hacer scroll -->
+    <div class="sobre-esquina" aria-hidden="true">
+      <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+        <!-- Carta asomando por detrás del sobre -->
+        <g class="sobre-carta">
+          <rect x="22" y="2" width="76" height="56" rx="2"
+                fill="#fffdf6" stroke="#3a2e1f" stroke-width="2"/>
+          <line x1="30" y1="16" x2="86" y2="16" stroke="#8a7a64" stroke-width="1.5" opacity="0.5"/>
+          <line x1="30" y1="26" x2="80" y2="26" stroke="#8a7a64" stroke-width="1.5" opacity="0.5"/>
+          <line x1="30" y1="36" x2="84" y2="36" stroke="#8a7a64" stroke-width="1.5" opacity="0.5"/>
+          <line x1="30" y1="46" x2="68" y2="46" stroke="#8a7a64" stroke-width="1.5" opacity="0.5"/>
+        </g>
+
+        <!-- Cuerpo del sobre (parte de abajo) -->
+        <path d="M 6,6 L 114,6 L 114,84 L 6,84 Z M 6,6 L 60,46 L 114,6"
+              fill="#fffdf6" stroke="#3a2e1f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+
+        <!-- Solapa superior — se anima para abrirse -->
+        <polygon class="sobre-solapa" points="6,6 114,6 60,46"
+                 fill="#fffdf6" stroke="#3a2e1f" stroke-width="3" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
 
     <!-- Selector de idioma -->
     <div class="selector-idioma" role="group" aria-label="Idioma / Language">
@@ -792,6 +852,30 @@
         gsap.to('.pie', {
           opacity: 1, duration: 0.6,
           scrollTrigger: { trigger: '.pie', start: 'top 95%' }
+        });
+
+        // 7) Sobre en la esquina — se abre al hacer scroll (cerrado en el top, abierto al final)
+        gsap.to('.sobre-solapa', {
+          rotation: -180, // rotación Z-axis (visible en SVG), bisagra arriba
+          ease: 'none',
+          transformOrigin: '60px 6px',
+          scrollTrigger: {
+            trigger: 'body',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.4
+          }
+        });
+        gsap.to('.sobre-carta', {
+          y: -22,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: 'body',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.4
+          }
         });
       }
 
