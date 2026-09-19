@@ -390,10 +390,18 @@
           <line x1="30" y1="46" x2="68" y2="46" stroke="#8a7a64" stroke-width="1.5" opacity="0.5"/>
         </g>
 
-        <!-- Cuerpo del sobre (delante) — la V del cerrado se dibuja aquí -->
+        <!-- Cuerpo del sobre (delante): solo los lados y el fondo (sin top, sin V) -->
         <path class="sobre-cuerpo"
-              d="M 6,6 L 114,6 L 114,84 L 6,84 Z M 6,6 L 60,46 L 114,6"
+              d="M 6,6 L 6,84 L 114,84 L 114,6"
               fill="#fffdf6" stroke="#3a2e1f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+
+        <!-- Línea superior (animada: desaparece al abrirse) -->
+        <line class="sobre-linea-top" x1="6" y1="6" x2="114" y2="6"
+              stroke="#3a2e1f" stroke-width="3" stroke-linecap="round"/>
+
+        <!-- V del cerrado (animada: desaparece al abrirse) -->
+        <path class="sobre-linea-v" d="M 6,6 L 60,46 L 114,6"
+              fill="none" stroke="#3a2e1f" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
       </svg>
     </div>
 
@@ -868,6 +876,17 @@
         gsap.to('.sobre-carta', {
           y: -22,
           opacity: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: 'body',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 0.4
+          }
+        });
+        // La línea superior y la V del cerrado se desvanecen conforme se abre el sobre
+        gsap.to(['.sobre-linea-top', '.sobre-linea-v'], {
+          opacity: 0,
           ease: 'none',
           scrollTrigger: {
             trigger: 'body',
