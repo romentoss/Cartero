@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Escríbeme una carta. Una forma pausada de presentarse, como antes." />
+  <meta name="description" data-i18n="meta_desc" content="Escríbeme una carta. Una forma pausada de presentarse, como antes." />
   <meta name="theme-color" content="#f5efe0" />
   <!-- Anti-clickjacking: evita que la web se incruste en iframes de terceros -->
-  <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'; default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; form-action https://formsubmit.co;">
+  <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'; default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; form-action https://formsubmit.co;">
   <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="referrer" content="strict-origin-when-cross-origin">
   <meta name="robots" content="noindex, nofollow">
-  <title>Escríbeme una carta</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%89%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <title data-i18n="title">Escríbeme una carta</title>
 
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,13 +22,13 @@
     /* ============== RESET & BASE ============== */
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
+    html, body { overflow-x: hidden; max-width: 100%; }
     body {
       font-family: 'Playfair Display', Georgia, serif;
       color: #3a2e1f;
       background-color: #f5efe0;
       min-height: 100vh;
       line-height: 1.6;
-      /* Textura sutil de papel mediante SVG inline */
       background-image:
         url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.23 0 0 0 0 0.18 0 0 0 0 0.12 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
         radial-gradient(ellipse at top left, #faf5e8 0%, #f0e8d4 100%);
@@ -39,8 +40,50 @@
     /* ============== LAYOUT ============== */
     .contenedor {
       max-width: 600px;
+      width: 100%;
       margin: 0 auto;
       padding: 48px 20px 64px;
+      position: relative;
+    }
+
+    /* ============== SELECTOR DE IDIOMA ============== */
+    .selector-idioma {
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      display: inline-flex;
+      gap: 0;
+      border: 1px solid rgba(58, 46, 31, 0.25);
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 253, 246, 0.6);
+      backdrop-filter: blur(4px);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      z-index: 10;
+    }
+    .selector-idioma button {
+      background: transparent;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+      color: #6b5a44;
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .selector-idioma button:hover {
+      color: #3a2e1f;
+    }
+    .selector-idioma button.activo {
+      background: #3a2e1f;
+      color: #fffdf6;
+    }
+    .selector-idioma button:focus-visible {
+      outline: 2px dashed #8b2c1f;
+      outline-offset: 2px;
     }
 
     /* ============== ENCABEZADO ============== */
@@ -82,7 +125,6 @@
         0 20px 40px rgba(58, 46, 31, 0.08);
       position: relative;
     }
-    /* sutiles imperfecciones en los bordes */
     .hoja::before {
       content: "";
       position: absolute;
@@ -93,9 +135,7 @@
     }
 
     /* ============== CAMPOS DEL FORMULARIO ============== */
-    .campo {
-      margin-bottom: 22px;
-    }
+    .campo { margin-bottom: 22px; }
     .campo label {
       display: block;
       font-family: 'Caveat', cursive;
@@ -128,7 +168,7 @@
     .campo textarea {
       resize: vertical;
       min-height: 180px;
-      line-height: 32px; /* coincide con el patrón de líneas del fondo */
+      line-height: 32px;
       padding: 0 2px;
     }
     .campo input::placeholder,
@@ -167,7 +207,7 @@
       color: #8a7a64;
       margin: 0 0 12px;
     }
-    .red .campo { margin-bottom: 14px; }
+    .red { margin-bottom: 14px; }
     .red label {
       display: flex;
       align-items: center;
@@ -213,9 +253,7 @@
         inset 0 3px 6px rgba(255, 200, 180, 0.15),
         0 6px 16px rgba(107, 31, 21, 0.45);
     }
-    .boton-sello:active {
-      transform: translateY(0) rotate(0);
-    }
+    .boton-sello:active { transform: translateY(0) rotate(0); }
     .boton-sello:focus-visible {
       outline: 3px dashed #8b2c1f;
       outline-offset: 4px;
@@ -278,7 +316,24 @@
         padding: 28px 22px 28px 38px;
         background-position: 0 0, 28px 0;
       }
-      .encabezado h1 { letter-spacing: 0; }
+      .encabezado h1 {
+        letter-spacing: 0;
+        font-size: clamp(2rem, 11vw, 3rem);
+        word-break: break-word;
+      }
+      .campo input,
+      .campo textarea { font-size: 1rem; }
+      .boton-sello { width: 96px; height: 96px; font-size: 1.4rem; }
+      .selector-idioma {
+        top: 10px;
+        right: 12px;
+        font-size: 0.8rem;
+      }
+      .selector-idioma button { padding: 5px 10px; }
+    }
+    @media (max-width: 380px) {
+      .contenedor { padding: 20px 8px 40px; }
+      .hoja { padding: 24px 16px 24px 32px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -291,20 +346,18 @@
 </head>
 <body>
   <main class="contenedor">
+
+    <!-- Selector de idioma -->
+    <div class="selector-idioma" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+
     <header class="encabezado">
-      <h1>Escríbeme una carta</h1>
-      <p class="subtitulo">Una forma más pausada de presentarse. Cuéntame con calma quién eres y, si quieres, por dónde encontrarte en redes.</p>
+      <h1 data-i18n="h1">Escríbeme una carta</h1>
+      <p class="subtitulo" data-i18n="subtitulo">Una forma más pausada de presentarse. Cuéntame con calma quién eres y, si quieres, por dónde encontrarte en redes.</p>
     </header>
 
-    <!-- =========================================== -->
-    <!-- FORMULARIO                                   -->
-    <!-- Configuración de FormSubmit:                 -->
-    <!--   _subject  → se completa con JS con nombre  -->
-    <!--   _template → email en formato tabla limpia  -->
-    <!--   _captcha  → anti-spam                      -->
-    <!--   _next     → redirige con ?enviado=1        -->
-    <!--   _honey    → honeypot oculto anti-bots      -->
-    <!-- =========================================== -->
     <form id="carta"
           action="https://formsubmit.co/romenpadpol@gmail.com"
           method="POST"
@@ -315,35 +368,35 @@
       <input type="hidden" name="_captcha" value="true" />
       <input type="hidden" name="_next" value="https://romentoss.github.io/Cartero/?enviado=1" />
 
-      <!-- Honeypots anti-bot (los bots rellenan todos los campos, los humanos no los ven) -->
+      <!-- Honeypots anti-bot -->
       <input type="text" name="_honey" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <input type="text" name="website" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <input type="checkbox" name="acepto_marketing" style="position:absolute;left:-9999px;top:-9999px;opacity:0" tabindex="-1" aria-hidden="true" />
 
-      <!-- Trampa de tiempo: el JS rellena este campo al cargar. Si al enviar está vacío, es un bot sin JS. -->
+      <!-- Trampa de tiempo -->
       <input type="hidden" name="_tiempo_carga" id="tiempo_carga" value="" />
 
       <article class="hoja" id="hoja">
         <div class="campo">
-          <label for="nombre">Tu nombre</label>
-          <input type="text" id="nombre" name="nombre" required minlength="2" maxlength="80" autocomplete="given-name" placeholder="Cómo te llamas" />
+          <label for="nombre" data-i18n="label_nombre">Tu nombre</label>
+          <input type="text" id="nombre" name="nombre" required minlength="2" maxlength="80" autocomplete="given-name" data-i18n-placeholder="ph_nombre" placeholder="Cómo te llamas" />
         </div>
 
         <div class="campo">
-          <label for="email">Tu email</label>
-          <span class="pista">Para que pueda contestarte. No se guarda en ningún sitio, solo llega a mi Gmail.</span>
-          <input type="email" id="email" name="email" required maxlength="120" autocomplete="email" placeholder="tu@correo.com" />
+          <label for="email" data-i18n="label_email">Tu email</label>
+          <span class="pista" data-i18n="pista_email">Para que pueda contestarte. No se guarda en ningún sitio, solo llega a mi Gmail.</span>
+          <input type="email" id="email" name="email" required maxlength="120" autocomplete="email" data-i18n-placeholder="ph_email" placeholder="tu@correo.com" />
         </div>
 
         <div class="campo">
-          <label for="mensaje">Tu carta</label>
-          <span class="pista">Sin prisa. Escribe como si fuera papel, no un chat.</span>
-          <textarea id="mensaje" name="mensaje" required minlength="20" maxlength="4000" rows="8" placeholder="Querido Romen, &#10;&#10;Me llamo… y quería contarte que…"></textarea>
+          <label for="mensaje" data-i18n="label_mensaje">Tu carta</label>
+          <span class="pista" data-i18n="pista_mensaje">Sin prisa. Escribe como si fuera papel, no un chat.</span>
+          <textarea id="mensaje" name="mensaje" required minlength="20" maxlength="4000" rows="8" data-i18n-placeholder="ph_mensaje" placeholder="Querido Romen, &#10;&#10;Me llamo… y quería contarte que…"></textarea>
         </div>
 
         <section class="redes" aria-labelledby="redes-titulo">
-          <h2 class="redes-titulo" id="redes-titulo">Si quieres, déjame tus redes</h2>
-          <p class="redes-pista">Ninguna es obligatoria. Solo si te apetece que te encuentre por ahí.</p>
+          <h2 class="redes-titulo" id="redes-titulo" data-i18n="redes_titulo">Si quieres, déjame tus redes</h2>
+          <p class="redes-pista" data-i18n="redes_pista">Ninguna es obligatoria. Solo si te apetece que te encuentre por ahí.</p>
 
           <div class="red">
             <div class="campo">
@@ -353,9 +406,9 @@
                   <circle cx="12" cy="12" r="4"/>
                   <circle cx="17.5" cy="6.5" r="0.8" fill="#8b2c1f"/>
                 </svg>
-                Instagram
+                <span data-i18n="label_instagram">Instagram</span>
               </label>
-              <input type="text" id="instagram" name="instagram" placeholder="@tu.usuario" />
+              <input type="text" id="instagram" name="instagram" data-i18n-placeholder="ph_instagram" placeholder="@tu.usuario" />
             </div>
           </div>
 
@@ -366,9 +419,9 @@
                   <path d="M14 4v9.5a3.5 3.5 0 1 1-3.5-3.5"/>
                   <path d="M14 4c.5 2.5 2.2 4.2 4.7 4.5"/>
                 </svg>
-                TikTok
+                <span data-i18n="label_tiktok">TikTok</span>
               </label>
-              <input type="text" id="tiktok" name="tiktok" placeholder="@tu.usuario" />
+              <input type="text" id="tiktok" name="tiktok" data-i18n-placeholder="ph_tiktok" placeholder="@tu.usuario" />
             </div>
           </div>
 
@@ -381,36 +434,180 @@
                   <circle cx="7" cy="7" r="0.9" fill="#8b2c1f"/>
                   <path d="M11 17v-7M11 13c0-2 1.5-3 3-3s3 1 3 3v4"/>
                 </svg>
-                LinkedIn
+                <span data-i18n="label_linkedin">LinkedIn</span>
               </label>
-              <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/tu-perfil" />
+              <input type="url" id="linkedin" name="linkedin" data-i18n-placeholder="ph_linkedin" placeholder="https://linkedin.com/in/tu-perfil" />
             </div>
           </div>
         </section>
 
         <div class="envoltura-boton">
-          <button type="submit" class="boton-sello" aria-label="Enviar carta">
+          <button type="submit" class="boton-sello" aria-label="Enviar carta" data-i18n="boton_aria" data-i18n-text="boton">
             Enviar<br>carta
           </button>
-          <p class="aviso">Tu carta llega a mi Gmail como un email privado.</p>
+          <p class="aviso" data-i18n="aviso">Tu carta llega a mi Gmail como un email privado.</p>
         </div>
       </article>
 
-      <!-- Confirmación (se muestra tras el redirect con ?enviado=1) -->
+      <!-- Confirmación tras envío -->
       <div class="confirmacion" id="confirmacion" role="status" aria-live="polite">
-        <h2>Tu carta está en camino</h2>
-        <p>La leeré con calma y te contestaré al email que me has dejado. Si no recibes respuesta en una semana, revisa la carpeta de promociones o spam — a veces Gmail se pone nervioso.</p>
-        <p class="firma">— R.</p>
+        <h2 data-i18n="conf_titulo">Tu carta está en camino</h2>
+        <p data-i18n="conf_texto">La leeré con calma y te contestaré al email que me has dejado. Si no recibes respuesta en una semana, revisa la carpeta de promociones o spam — a veces Gmail se pone nervioso.</p>
+        <p class="firma" data-i18n="conf_firma">— R.</p>
       </div>
     </form>
 
-    <p class="pie">Sin bases de datos, sin intermediarios. La carta viaja directa a mi Gmail.</p>
+    <p class="pie" data-i18n="pie">Sin bases de datos, sin intermediarios. La carta viaja directa a mi Gmail.</p>
   </main>
 
   <script>
     (function () {
       'use strict';
 
+      /* =====================================================
+         TEXTOS — todos los strings traducibles de la web
+         ===================================================== */
+      var TEXTOS = {
+        es: {
+          htmlLang: 'es',
+          title: 'Escríbeme una carta',
+          meta_desc: 'Escríbeme una carta. Una forma pausada de presentarse, como antes.',
+          h1: 'Escríbeme una carta',
+          subtitulo: 'Una forma más pausada de presentarse. Cuéntame con calma quién eres y, si quieres, por dónde encontrarte en redes.',
+          label_nombre: 'Tu nombre',
+          ph_nombre: 'Cómo te llamas',
+          label_email: 'Tu email',
+          pista_email: 'Para que pueda contestarte. No se guarda en ningún sitio, solo llega a mi Gmail.',
+          ph_email: 'tu@correo.com',
+          label_mensaje: 'Tu carta',
+          pista_mensaje: 'Sin prisa. Escribe como si fuera papel, no un chat.',
+          ph_mensaje: 'Querido Romen,\n\nMe llamo… y quería contarte que…',
+          redes_titulo: 'Si quieres, déjame tus redes',
+          redes_pista: 'Ninguna es obligatoria. Solo si te apetece que te encuentre por ahí.',
+          label_instagram: 'Instagram',
+          ph_instagram: '@tu.usuario',
+          label_tiktok: 'TikTok',
+          ph_tiktok: '@tu.usuario',
+          label_linkedin: 'LinkedIn',
+          ph_linkedin: 'https://linkedin.com/in/tu-perfil',
+          boton: 'Enviar<br>carta',
+          boton_aria: 'Enviar carta',
+          boton_enviando: 'Enviando…',
+          aviso: 'Tu carta llega a mi Gmail como un email privado.',
+          conf_titulo: 'Tu carta está en camino',
+          conf_texto: 'La leeré con calma y te contestaré al email que me has dejado. Si no recibes respuesta en una semana, revisa la carpeta de promociones o spam — a veces Gmail se pone nervioso.',
+          conf_firma: '— R.',
+          pie: 'Sin bases de datos, sin intermediarios. La carta viaja directa a mi Gmail.',
+          subject_prefix: 'Nueva carta de ',
+          subject_default: 'Nueva carta desde tu web',
+          alert_tiempo: 'Espera un momento antes de enviar la carta (esto evita envíos automáticos).',
+          alert_cooldown: 'Acabas de enviar una carta. Vuelve a intentarlo en {s} segundos.',
+          alert_email: 'El email no parece válido. Revísalo.',
+          alert_mensaje: 'La carta es un poco corta. Cuéntame algo más (al menos 20 caracteres).'
+        },
+        en: {
+          htmlLang: 'en',
+          title: 'Write me a letter',
+          meta_desc: 'Write me a letter. A slower way to introduce yourself, like in the old days.',
+          h1: 'Write me a letter',
+          subtitulo: "A more unhurried way to introduce yourself. Tell me calmly who you are and, if you'd like, where to find you on social media.",
+          label_nombre: 'Your name',
+          ph_nombre: "What's your name",
+          label_email: 'Your email',
+          pista_email: "So I can reply to you. It's not stored anywhere, it just reaches my Gmail.",
+          ph_email: 'you@email.com',
+          label_mensaje: 'Your letter',
+          pista_mensaje: 'No rush. Write as if it were paper, not a chat.',
+          ph_mensaje: 'Dear Romen,\n\nMy name is… and I wanted to tell you that…',
+          redes_titulo: "If you'd like, leave me your socials",
+          redes_pista: "None are required. Only if you'd like me to find you there.",
+          label_instagram: 'Instagram',
+          ph_instagram: '@your.username',
+          label_tiktok: 'TikTok',
+          ph_tiktok: '@your.username',
+          label_linkedin: 'LinkedIn',
+          ph_linkedin: 'https://linkedin.com/in/your-profile',
+          boton: 'Send<br>letter',
+          boton_aria: 'Send letter',
+          boton_enviando: 'Sending…',
+          aviso: 'Your letter arrives at my Gmail as a private email.',
+          conf_titulo: 'Your letter is on its way',
+          conf_texto: "I'll read it carefully and reply to the email you left me. If you don't hear back within a week, check your promotions or spam folder — Gmail sometimes gets nervous.",
+          conf_firma: '— R.',
+          pie: 'No databases, no middlemen. The letter travels straight to my Gmail.',
+          subject_prefix: 'New letter from ',
+          subject_default: 'New letter from your site',
+          alert_tiempo: 'Please wait a moment before sending the letter (this prevents automated submissions).',
+          alert_cooldown: 'You just sent a letter. Try again in {s} seconds.',
+          alert_email: "That email doesn't look valid. Please check it.",
+          alert_mensaje: 'The letter is a little short. Tell me a bit more (at least 20 characters).'
+        }
+      };
+
+      var IDIOMA_POR_DEFECTO = 'es';
+      var CLAVE_IDIOMA = 'cartero_idioma';
+
+      /* =====================================================
+         IDIOMA
+         ===================================================== */
+      function detectarIdioma() {
+        try {
+          var guardado = window.localStorage.getItem(CLAVE_IDIOMA);
+          if (guardado && TEXTOS[guardado]) return guardado;
+        } catch (e) {}
+        var nav = (navigator.language || navigator.userLanguage || '').toLowerCase();
+        if (nav.indexOf('en') === 0) return 'en';
+        return IDIOMA_POR_DEFECTO;
+      }
+
+      function aplicarIdioma(lang) {
+        if (!TEXTOS[lang]) lang = IDIOMA_POR_DEFECTO;
+        var t = TEXTOS[lang];
+
+        document.documentElement.lang = t.htmlLang;
+        document.title = t.title;
+
+        var metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', t.meta_desc);
+
+        // data-i18n → textContent
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+          var clave = el.getAttribute('data-i18n');
+          if (t[clave] != null) el.innerHTML = t[clave];
+        });
+        // data-i18n-placeholder → placeholder
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
+          var clave = el.getAttribute('data-i18n-placeholder');
+          if (t[clave] != null) el.setAttribute('placeholder', t[clave]);
+        });
+        // data-i18n-aria-label → aria-label
+        document.querySelectorAll('[data-i18n-aria]').forEach(function (el) {
+          var clave = el.getAttribute('data-i18n-aria');
+          if (t[clave] != null) el.setAttribute('aria-label', t[clave]);
+        });
+        // data-i18n-text → button con HTML permitido (para el botón Enviar)
+        document.querySelectorAll('[data-i18n-text]').forEach(function (el) {
+          var clave = el.getAttribute('data-i18n-text');
+          if (t[clave] != null) el.innerHTML = t[clave];
+        });
+
+        // Marcar el botón de idioma activo
+        document.querySelectorAll('.selector-idioma button').forEach(function (btn) {
+          var activo = btn.getAttribute('data-lang') === lang;
+          btn.classList.toggle('activo', activo);
+          btn.setAttribute('aria-pressed', activo ? 'true' : 'false');
+        });
+
+        // Guardar preferencia
+        try { window.localStorage.setItem(CLAVE_IDIOMA, lang); } catch (e) {}
+
+        // Actualizar el subject del email con el nuevo idioma
+        actualizarAsunto();
+      }
+
+      /* =====================================================
+         FORMULARIO
+         ===================================================== */
       var form = document.getElementById('carta');
       var nombre = document.getElementById('nombre');
       var email = document.getElementById('email');
@@ -421,96 +618,95 @@
       var confirmacion = document.getElementById('confirmacion');
       var hoja = document.getElementById('hoja');
 
-      var TIEMPO_MINIMO = 5000;     // 5 s para descartar bots ultrarrápidos
-      var COOLDOWN = 60000;          // 60 s entre envíos desde el mismo navegador
+      var TIEMPO_MINIMO = 5000;
+      var COOLDOWN = 60000;
       var CLAVE_COOLDOWN = 'cartero_ultimo_envio';
       var inicioCarga = Date.now();
+      var langActual = detectarIdioma();
 
-      // 1) Marcar el campo oculto con el timestamp de carga (anti-bot sin JS)
       tiempoCarga.value = String(inicioCarga);
 
-      // 2) Personalizar el subject del email con el nombre del remitente
+      function t() { return TEXTOS[langActual]; }
+
       function actualizarAsunto() {
         var n = (nombre.value || '').trim();
-        asunto.value = n ? 'Nueva carta de ' + n : 'Nueva carta desde tu web';
+        asunto.value = n ? t().subject_prefix + n : t().subject_default;
       }
       nombre.addEventListener('input', actualizarAsunto);
 
-      // 3) Sanitizar el email en tiempo real (sin espacios, en minúsculas)
       email.addEventListener('input', function () {
         email.value = email.value.replace(/\s+/g, '').toLowerCase();
       });
 
-      // 4) Helpers
-      function mostrarError(mensajeError) {
-        // Mensaje nativo del navegador, suficiente y accesible
-        window.alert(mensajeError);
+      function mostrarError(msg) {
+        window.alert(msg);
         boton.disabled = false;
-        boton.innerHTML = 'Enviar<br>carta';
+        boton.innerHTML = t().boton;
       }
 
-      // 5) Validación anti-abuso antes de enviar
       form.addEventListener('submit', function (evento) {
-        // 5a) Honeypots: si los campos invisibles tienen valor, es un bot
         var honeypots = form.querySelectorAll('input[name="_honey"], input[name="website"], input[name="acepto_marketing"]');
         for (var i = 0; i < honeypots.length; i++) {
           if (honeypots[i].type === 'checkbox') {
-            if (honeypots[i].checked) {
-              evento.preventDefault();
-              return; // silencioso, no avisamos al bot
-            }
+            if (honeypots[i].checked) { evento.preventDefault(); return; }
           } else if (honeypots[i].value && honeypots[i].value.trim() !== '') {
-            evento.preventDefault();
-            return;
+            evento.preventDefault(); return;
           }
         }
 
-        // 5b) Trampa de tiempo: si han pasado menos de TIEMPO_MINIMO ms, bloqueamos
         var tiempoTranscurrido = Date.now() - inicioCarga;
         if (!tiempoCarga.value || tiempoTranscurrido < TIEMPO_MINIMO) {
           evento.preventDefault();
-          mostrarError('Espera un momento antes de enviar la carta (esto evita envíos automáticos).');
+          mostrarError(t().alert_tiempo);
           return;
         }
 
-        // 5c) Rate-limit por navegador: si se envió hace menos de COOLDOWN, bloqueamos
         try {
           var ultimo = parseInt(window.localStorage.getItem(CLAVE_COOLDOWN) || '0', 10);
           if (ultimo && (Date.now() - ultimo) < COOLDOWN) {
             evento.preventDefault();
             var segundos = Math.ceil((COOLDOWN - (Date.now() - ultimo)) / 1000);
-            mostrarError('Acabas de enviar una carta. Vuelve a intentarlo en ' + segundos + ' segundos.');
+            mostrarError(t().alert_cooldown.replace('{s}', segundos));
             return;
           }
-        } catch (e) { /* localStorage no disponible, seguimos */ }
+        } catch (e) {}
 
-        // 5d) Validación extra del email (al menos un @ y un punto en el dominio)
         var emailVal = (email.value || '').trim();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailVal)) {
           evento.preventDefault();
-          mostrarError('El email no parece válido. Revísalo.');
+          mostrarError(t().alert_email);
           email.focus();
           return;
         }
 
-        // 5e) Validar longitud razonable del mensaje
         if (mensaje.value.trim().length < 20) {
           evento.preventDefault();
-          mostrarError('La carta es un poco corta. Cuéntame algo más (al menos 20 caracteres).');
+          mostrarError(t().alert_mensaje);
           mensaje.focus();
           return;
         }
 
-        // Si todo OK: registrar timestamp y bloquear botón
-        try {
-          window.localStorage.setItem(CLAVE_COOLDOWN, String(Date.now()));
-        } catch (e) { /* sin localStorage, no pasa nada */ }
+        try { window.localStorage.setItem(CLAVE_COOLDOWN, String(Date.now())); } catch (e) {}
 
         boton.disabled = true;
-        boton.textContent = 'Enviando…';
+        boton.textContent = t().boton_enviando;
       });
 
-      // 6) Mostrar confirmación si volvimos con ?enviado=1
+      /* =====================================================
+         INICIALIZACIÓN
+         ===================================================== */
+      // Aplicar idioma ANTES de que el usuario vea nada
+      aplicarIdioma(langActual);
+
+      // Selector de idioma
+      document.querySelectorAll('.selector-idioma button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          langActual = btn.getAttribute('data-lang');
+          aplicarIdioma(langActual);
+        });
+      });
+
+      // Confirmación post-envío
       var params = new URLSearchParams(window.location.search);
       if (params.get('enviado') === '1') {
         hoja.style.display = 'none';
