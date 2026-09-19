@@ -111,13 +111,7 @@
     /* ============== HOJA DE PAPEL ============== */
     .hoja {
       background-color: #fffdf6;
-      background-image:
-        linear-gradient(to bottom, transparent 0%, transparent 31px, rgba(122, 102, 78, 0.18) 32px),
-        linear-gradient(to right, transparent 0%, transparent 39px, rgba(200, 80, 80, 0.12) 40px);
-      background-size: 100% 32px, 100% 100%;
-      background-repeat: repeat-y;
-      background-position: 0 0, 40px 0;
-      padding: 40px 36px 36px 56px;
+      padding: 40px 36px 36px 40px;
       border-radius: 4px;
       box-shadow:
         0 1px 2px rgba(58, 46, 31, 0.08),
@@ -168,8 +162,8 @@
     .campo textarea {
       resize: vertical;
       min-height: 180px;
-      line-height: 32px;
-      padding: 0 2px;
+      line-height: 1.7;
+      padding: 8px 2px;
     }
     .campo input::placeholder,
     .campo textarea::placeholder {
@@ -312,10 +306,7 @@
     /* ============== RESPONSIVE ============== */
     @media (max-width: 540px) {
       .contenedor { padding: 28px 12px 48px; }
-      .hoja {
-        padding: 28px 22px 28px 38px;
-        background-position: 0 0, 28px 0;
-      }
+      .hoja { padding: 28px 22px; }
       .encabezado h1 {
         letter-spacing: 0;
         font-size: clamp(2rem, 11vw, 3rem);
@@ -333,7 +324,7 @@
     }
     @media (max-width: 380px) {
       .contenedor { padding: 20px 8px 40px; }
-      .hoja { padding: 24px 16px 24px 32px; }
+      .hoja { padding: 24px 18px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
